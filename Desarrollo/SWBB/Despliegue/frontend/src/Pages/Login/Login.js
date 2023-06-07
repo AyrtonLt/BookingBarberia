@@ -119,6 +119,7 @@ const Login = (props) => {
             color="primary"
             className={classes.submit}
             onClick={() => {
+              /*
               if (password && eMail) {
                 setIsLoading(true);
                 Agent.Customers.login()
@@ -148,6 +149,7 @@ const Login = (props) => {
                     }
                   });
               }
+              */
             }}
           >
             Iniciar Sesión
