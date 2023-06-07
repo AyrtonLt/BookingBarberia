@@ -1,63 +1,49 @@
-import React, { useState } from 'react';
-import './App.css';
-import Register from './components/Register';
-import Usuario from './components/Usuario';
+import React from "react";
+import "./App.css";
 
-const App = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [isRegistering, setIsRegistering] = useState(false);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
-    const handleLogin = () => {
-        // Agrega aquí la lógica para el inicio de sesión
+import history from "./services/history";
+import Routes from "./routes";
+import GlobalStyles from "./styles/global";
 
-        // Supongamos que el inicio de sesión fue exitoso
-        setIsLoggedIn(true);
-    };
+import {
+  createMuiTheme,
+  makeStyles,
+  ThemeProvider,
+} from "@material-ui/core/styles";
 
-    const handleToggleRegister = () => {
-        setIsRegistering(!isRegistering);
-    };
+const newTheme = createMuiTheme({
+  palette: {
+    primary: {
+      main: "#29354C", // Color principal 1
+      dark: "#303E58", // Color principal 2 (más oscuro)
+      light: "#374765", // Color principal 3 (más claro)
+      contrastText: "#FFFFFF", // Texto contrastante para los colores principales
+    },
+    secondary: {
+      main: "#682328", // Color de acentuación 1
+      dark: "#7A292E", // Color de acentuación 2 (más oscuro)
+      light: "#8B2F35", // Color de acentuación 3 (más claro)
+      contrastText: "#FFFFFF", // Texto contrastante para los colores de acentuación
+    },
+    tertiary: {
+      main: "#A93941", // Color de acentuación 4
+      dark: "#C24951", // Color de acentuación 5 (más oscuro)
+      light: "#475B82", // Color principal 4 (más claro)
+      contrastText: "#FFFFFF", // Texto contrastante para los colores de acentuación
+    },
+  },
+});
 
-    return (
-        <div className="App">
-            <h1>Booking de Barbería</h1>
-            {!isLoggedIn ? (
-                <div>
-                    {isRegistering ? (
-                        <Register />
-                    ) : (
-                        <div>
-                            <img src="images/barberohome.jpg" alt="Barbero" />
-                            <form onSubmit={handleLogin}>
-                                <input
-                                    type="email"
-                                    placeholder="Correo electrónico"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                />
-                                <input
-                                    type="password"
-                                    placeholder="Contraseña"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                />
-                                <button type="submit">Iniciar sesión</button>
-                            </form>
-                        </div>
-                    )}
-                    <button onClick={handleToggleRegister}>
-                        {isRegistering ? 'Volver al inicio de sesión' : 'Registrarse'}
-                    </button>
-                </div>
-            ) : (
-                <Usuario />
-            )}
-        </div>
-    );
-};
-
+function App() {
+  return (
+    <Router history={history}>
+      <ThemeProvider theme={newTheme}>
+        <Routes />
+      </ThemeProvider>
+      <GlobalStyles />
+    </Router>
+  );
+}
 export default App;
-
-
