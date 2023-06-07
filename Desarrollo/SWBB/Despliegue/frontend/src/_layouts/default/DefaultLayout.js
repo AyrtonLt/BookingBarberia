@@ -269,7 +269,7 @@ const DefaultLayout = (props) => {
                         >
                           Perfil
                         </MenuItem>
-                        <MenuItem onClick={handleClose}>Randevularım</MenuItem>
+                        <MenuItem onClick={handleClose}>Mis Citas</MenuItem>
                         <MenuItem
                           onClick={() => {
                             handleClose();
