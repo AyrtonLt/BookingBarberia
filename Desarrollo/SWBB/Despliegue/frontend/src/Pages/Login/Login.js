@@ -60,6 +60,7 @@ const Login = (props) => {
   const history = useHistory();
 
   const customer = props.customer;
+
   return !customer ? (
     <Container component="main" maxWidth="xs">
       {isLoading && <Loading></Loading>}
@@ -119,6 +120,7 @@ const Login = (props) => {
             color="primary"
             className={classes.submit}
             onClick={() => {
+
               /*
               if (password && eMail) {
                 setIsLoading(true);
