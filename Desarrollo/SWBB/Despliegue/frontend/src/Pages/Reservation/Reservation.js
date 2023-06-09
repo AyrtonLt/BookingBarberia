@@ -389,7 +389,7 @@ class Reservation extends Component {
                   </StepContent>
                 </Step>
                 <Step key={2} active={this.state.stepTwoActive}>
-                  <StepLabel>Historia</StepLabel>
+                  <StepLabel>Horario</StepLabel>
                   <StepContent>
                     <Typography>
                       {this.state.selectedDate == false ? (
