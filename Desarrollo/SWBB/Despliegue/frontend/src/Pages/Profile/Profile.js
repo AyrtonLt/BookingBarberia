@@ -22,6 +22,8 @@ import {
   ButtonBase,
 } from "@material-ui/core";
 
+import axios from "axios";
+
 const TopNavBar = styled.div`
   width: 100%;
   height: 35px;
@@ -268,6 +270,7 @@ const AppointmentsComp = ({ appointment }) => {
 const Profile = ({}) => {
   const classes = useStyles();
   const customerStorage = Storage.GetItem("customer");
+  const [authToken, setAuthToken] = useState("");
   const [pageNumber, setPageNumber] = useState(1);
   const [customer, setCustomer] = useState();
   const [customerAppointments, setCustomerAppointments] = useState();

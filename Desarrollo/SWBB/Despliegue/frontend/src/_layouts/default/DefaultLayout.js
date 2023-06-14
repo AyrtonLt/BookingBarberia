@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useRouteMatch, useHistory } from "react-router-dom";
+import { useRouteMatch, useHistory, Link } from "react-router-dom";
 import { Storage } from "../../Utils/Storage";
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -15,10 +15,6 @@ import {
   Paper,
   useMediaQuery,
   IconButton,
-  Drawer,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
 } from "@material-ui/core";
 import clsx from "clsx";
 import Settings from "@material-ui/icons/Settings";
@@ -26,10 +22,9 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import StoreIcon from "@material-ui/icons/Store";
 import styled from "styled-components";
 import BarberoLogo from "../../Resources/Images/barbero.png";
-import { Link } from "react-router-dom";
-
 import MenuIcon from "@material-ui/icons/Menu";
 import { useTheme } from "@material-ui/core/styles";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -69,31 +64,27 @@ const DrawerMenu = styled.div`
   bottom: -48px;
   left: 0;
   transition: transform 0.3s ease-in-out;
- // height: ${({ open }) => (open ? "auto" : "0px")};
+  // height: ${({open}) => (open ? "auto" : "0px")};
   opacity: ${({ open }) => (open ? "0.8" : "0")};
   transform: ${({ open }) => (open ? "translateY(0)" : "translateY(50)")};
 `;
 
 const DefaultLayout = (props) => {
   const classes = useStyles();
-  const [auth, setAuth] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [drawer, setDrawer] = React.useState(null);
-
   const open = Boolean(anchorEl);
-  // const [customer, setCustomer] = React.useState(Storage.GetItem("customer"));
-  //const customer = Storage.GetItem("customer");
+  const customer = Storage.GetItem("customer");
+
   const history = useHistory();
   const { path } = useRouteMatch();
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
-  const handleChange = (event) => {
-    setAuth(event.target.checked);
-  };
 
   const handleDrawerMenu = (event) => {
     setDrawer(event.currentTarget);
   };
+
   const handleDrawerClose = () => {
     setDrawer(null);
   };
@@ -105,9 +96,24 @@ const DefaultLayout = (props) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const handleLogout = () => {
+    // Eliminar el token del almacenamiento local
+    localStorage.removeItem("token");
+    // Redirigir al usuario a la página de inicio de sesión u otra página relevante
+    history.push("/");
+  };
+
+  // Verificar si el usuario está autenticado según la existencia del token en el almacenamiento local
+  const isAuthenticated = !!localStorage.getItem("token");
+  console.log("¿El usuario está autenticado?", isAuthenticated);
+
   return (
     <>
-      <div className={classes.root} style={{ height: "100%", width: "100%" }}>
+      <div
+        className={classes.root}
+        style={{ height: "100%", width: "100%" }}
+      >
         <AppBar
           position="static"
           style={{ width: "100%", position: "relative" }}
@@ -118,7 +124,11 @@ const DefaultLayout = (props) => {
             <Link to="/" style={{ color: "black" }}>
               <img
                 src={BarberoLogo}
-                style={{ width: "50px", height: "50px", marginRight: "1em" }}
+                style={{
+                  width: "50px",
+                  height: "50px",
+                  marginRight: "1em",
+                }}
               ></img>
             </Link>
 
@@ -133,10 +143,6 @@ const DefaultLayout = (props) => {
                 }}
               >
                 <Typography variant="h6" className={classes.title}>
-                  {/* <Link to="/" style={{ color: "black" }}>
-                 
-                    E-Berber
-                  </Link> */}
                   <Button>
                     <Link
                       to="/barbers"
@@ -146,15 +152,54 @@ const DefaultLayout = (props) => {
                     </Link>
                   </Button>
                 </Typography>
-                <IconButton
-                  aria-label="account of current user"
-                  aria-controls="menu-appbar"
-                  aria-haspopup="true"
-                  onClick={handleDrawerMenu}
-                  color="inherit"
-                >
-                  <MenuIcon />
-                </IconButton>
+                {customer ? (
+                  <>
+                    <IconButton
+                      aria-label="account of current user"
+                      aria-controls="menu-appbar"
+                      aria-haspopup="true"
+                      onClick={handleMenu}
+                      color="inherit"
+                    >
+                      <AccountCircle />
+                    </IconButton>
+                    <Menu
+                      id="menu-appbar"
+                      anchorEl={anchorEl}
+                      anchorOrigin={{
+                        vertical: "top",
+                        horizontal: "right",
+                      }}
+                      keepMounted
+                      transformOrigin={{
+                        vertical: "top",
+                        horizontal: "right",
+                      }}
+                      open={open}
+                      onClose={handleClose}
+                    >
+                      <MenuItem
+                        onClick={() => {
+                          history.push("/profile");
+                          handleClose();
+                        }}
+                      >
+                        Perfil
+                      </MenuItem>
+                      <MenuItem onClick={handleLogout}>Cerrar Sesión</MenuItem>
+                    </Menu>
+                  </>
+                ) : (
+                  <IconButton
+                    aria-label="menu"
+                    aria-controls="menu-appbar"
+                    aria-haspopup="true"
+                    onClick={handleDrawerMenu}
+                    color="inherit"
+                  >
+                    <MenuIcon />
+                  </IconButton>
+                )}
                 <Menu
                   id="menu-appbar"
                   anchorEl={drawer}
@@ -172,21 +217,17 @@ const DefaultLayout = (props) => {
                 >
                   <MenuItem
                     onClick={() => {
-                      if (props.customer) history.push("/profile");
-                      else {
-                        history.push("/login");
-                      }
+                      if (customer) history.push("/profile");
+                      else history.push("/login");
                       handleDrawerClose();
                     }}
                   >
-                    {props.customer
-                      ? props.customer.name + " " + props.customer.lastName
-                      : "Iniciar Sesión"}
+                    {customer ? `${customer.name} ${customer.lastName}` : "Iniciar Sesión"}
                   </MenuItem>
                   <MenuItem
                     onClick={() => {
                       handleDrawerClose();
-                      if (props.customer) {
+                      if (customer) {
                         Storage.RemoveItem("customer");
                         history.push("/login");
                         props.setCustomer(false);
@@ -196,36 +237,31 @@ const DefaultLayout = (props) => {
                       }
                     }}
                   >
-                    {props.customer ? "Cerrar Sesión" : "Regístrate"}
+                    {customer ? "Cerrar Sesión" : "Regístrate"}
                   </MenuItem>
                 </Menu>
               </div>
             ) : (
               <>
                 <Typography variant="h6" className={classes.title}>
-                  {/* E-Berber */}
                   <Button
                     style={{ marginLeft: "1em" }}
-                    onClick={() => {
-                      //Router.push("/");
-                    }}
+                    component={Link}
+                    to="/"
+                    color="black"
                   >
-                    <Link to="/" style={{ color: "black" }}>
-                      Home
-                    </Link>
+                    Home
                   </Button>
-                  <Button
-                    onClick={() => {
-                      //    Router.push("/barbers");
-                    }}
-                  >
-                    <Link to="/barbers" style={{ color: "black" }}>
-                      Barberías
-                    </Link>
+                  <Button component={Link} to="/barbers" color="black">
+                    Barberías
                   </Button>
+                  <Button component={Link} to="/profile" color="black">
+                    Perfil
+                  </Button>
+
                 </Typography>
                 <div>
-                  {props.customer ? (
+                  {customer ? (
                     <div
                       style={{
                         display: "flex",
@@ -235,7 +271,7 @@ const DefaultLayout = (props) => {
                       }}
                     >
                       <div style={{ color: "black" }}>
-                        {props.customer.name} {props.customer.lastName}
+                        {customer.name} {customer.lastName}
                       </div>
                       <IconButton
                         aria-label="account of current user"
@@ -261,54 +297,57 @@ const DefaultLayout = (props) => {
                         open={open}
                         onClose={handleClose}
                       >
-                        <MenuItem
-                          onClick={() => {
-                            history.push("/profile");
-                            handleClose();
-                          }}
-                        >
-                          Perfil
-                        </MenuItem>
-                        <MenuItem onClick={handleClose}>Mis Citas</MenuItem>
-                        <MenuItem
-                          onClick={() => {
-                            handleClose();
-                            Storage.RemoveItem("customer");
-                            history.push("/login");
-                            props.setCustomer(false);
-                          }}
-                        >
-                          Cerrar Sesión
-                        </MenuItem>
+                        {isAuthenticated &&(
+                          <MenuItem
+                            onClick={() => {
+                              history.push("/profile");
+                              handleClose();
+                            }}
+                          >
+                            Perfil
+                          </MenuItem>
+                        )}
+                        <MenuItem onClick={handleLogout}>Cerrar Sesión</MenuItem>
                       </Menu>
                     </div>
                   ) : (
                     <>
-                      <Button
-                        variant="outlined"
-                        style={{ marginRight: ".5em", padding: ".5em 1em" }}
-                        onClick={() => {
-                          //     Router.push("/signup");
-                        }}
-                      >
-                        <Link to="/signup" style={{ color: "black" }}>
-                          Regístrate
-                        </Link>
-                      </Button>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        style={{ padding: ".5em 1em" }}
-                        className={classes.button}
-                        // endIcon={<Icon>send</Icon>}
-                        onClick={() => {
-                          //            Router.push("/login");
-                        }}
-                      >
-                        <Link to="/login" style={{ color: "white" }}>
-                          Iniciar Sesión
-                        </Link>
-                      </Button>
+                      {!isAuthenticated && (
+                        <>
+                          <Button
+                            variant="outlined"
+                            style={{ marginRight: ".5em", padding: ".5em 1em" }}
+                            component={Link}
+                            to="/signup"
+                            color="black"
+                          >
+                            Regístrate
+                          </Button>
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            style={{ padding: ".5em 1em" }}
+                            className={classes.button}
+                            component={Link}
+                            to="/login"
+                          >
+                            Iniciar Sesión
+                          </Button>
+                        </>
+                      )}
+                      {isAuthenticated && (
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          style={{ padding: ".5em 1em" }}
+                          className={classes.button}
+                          component={Link}
+                          to="/"
+                          onClick={handleLogout}
+                        >
+                          Cerrar Sesión
+                        </Button>
+                      )}
                     </>
                   )}
                 </div>
@@ -331,4 +370,5 @@ const DefaultLayout = (props) => {
     </>
   );
 };
+
 export default DefaultLayout;
