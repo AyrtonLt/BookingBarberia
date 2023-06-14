@@ -1,4 +1,5 @@
 const connection = require('../bdConnection');
+const jwt = require('jsonwebtoken');
 
 const getUsers = (req, res) => {
     const q = "SELECT * FROM Cliente";
@@ -62,9 +63,53 @@ const deleteUser = (req, res) => {
     });
 };
 
+// Modulo de Autenticacion con JSON Web Tokens (JWT)
+const login = (req, res) => {
+    const { correo, pass } = req.body;
+
+    // Verificar las credenciales en la base de datos
+    const query = "SELECT * FROM Cliente WHERE correoCliente = ? AND passwordCliente = ?";
+    connection.query(query, [correo, pass], (err, result) => {
+        if (err) {
+            return res.json({ error: 'Error en la consulta' });
+        }
+
+        if (result.length === 0) {
+            return res.json({ error: 'Credenciales inválidas' });
+        }
+
+        // Generar el token JWT
+        const user = result[0];
+        const token = jwt.sign({ id: user.idCliente, correo: user.correoCliente }, 'secreto', {
+            expiresIn: '1h',
+        });
+        return res.json({ token });
+    });
+};
+
+const verifyToken = (req, res, next) => {
+    const token = req.headers.authorization;
+
+    if (!token) {
+        return res.status(401).json({ error: 'Token no proporcionado' });
+    }
+
+    // Verificar y decodificar el token
+    jwt.verify(token, 'secreto', (err, decoded) => {
+        if (err) {
+            return res.status(401).json({ error: 'Token inválido' });
+        }
+        // Agregar el objeto decodificado al objeto de solicitud
+        req.user = decoded;
+        next();
+    });
+};
+
 module.exports = {
     getUsers,
     createUser,
     updateUser,
     deleteUser,
+    login,
+    verifyToken,
 };

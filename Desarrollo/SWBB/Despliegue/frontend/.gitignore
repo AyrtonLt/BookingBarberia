@@ -25,3 +25,7 @@ yarn-error.log*
 
 .idea
 .github
+../.idea/Despliegue.iml
+../.idea/modules.xml
+azure-pipelines.yml
+src/screenshots/

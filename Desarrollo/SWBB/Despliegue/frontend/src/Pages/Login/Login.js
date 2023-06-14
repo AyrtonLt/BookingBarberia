@@ -17,6 +17,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import ConfirmModal from "../../Components/ConfirmModal/ConfirmModal";
 import { makeStyles } from "@material-ui/core/styles";
 import Copyright from "../../Components/Copyright";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -108,38 +109,28 @@ const Login = (props) => {
             color="primary"
             className={classes.submit}
             onClick={() => {
-
-              /*
               if (password && eMail) {
                 setIsLoading(true);
-                Agent.Customers.login()
-                  .send({
-                    eMail: eMail,
-                    password: password,
-                  })
-                  .then((res) => {
-                    if (res.ok) {
-                      if (!res.body.Error) {
-                        setIsLoading(false);
-                        Storage.SetItem("customer", {
-                          ...res.body.data,
-                          password: "****",
-                        });
+                axios
+                    .post("http://localhost:3000/login", { correo: eMail, pass: password })
+                    .then((res) => {
+                      setIsLoading(false);
+                      if (res.data.token) {
+                        // Almacenar el token en el almacenamiento local (localStorage o sessionStorage)
+                        localStorage.setItem("token", res.data.token);
+                        // Redirigir a la página principal u otra página deseada
                         history.push("/");
-
-                        props.setCustomer({
-                          ...res.body.data,
-                          password: "****",
-                        });
                       } else {
                         setOpenConfirmModal(true);
-                        setIsLoading(false);
-                        setModalContent(res.body.Message);
+                        setModalContent(res.data.error);
                       }
-                    }
-                  });
+                    })
+                    .catch((err) => {
+                      setIsLoading(false);
+                      setOpenConfirmModal(true);
+                      setModalContent("Error de conexión");
+                    });
               }
-              */
             }}
           >
             Iniciar Sesión
