@@ -16,19 +16,7 @@ import {
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import ConfirmModal from "../../Components/ConfirmModal/ConfirmModal";
 import { makeStyles } from "@material-ui/core/styles";
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © "}
-      {new Date().getFullYear()}
-      {" "}
-      <Link color="inherit" href="https://material-ui.com/">
-        BugFund. Todos los derechos reservados.
-      </Link>
-    </Typography>
-  );
-}
+import Copyright from "../../Components/Copyright";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
