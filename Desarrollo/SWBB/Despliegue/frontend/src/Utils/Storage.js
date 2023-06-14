@@ -1,4 +1,7 @@
 export const Storage = {
+  SetToken: (token) => {
+    localStorage.setItem('token', token);
+  },
   GetItem: (itemName) => {
     return JSON.parse(localStorage.getItem(itemName));
   },

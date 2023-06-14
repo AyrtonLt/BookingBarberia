@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+../server/node_modules
 /.pnp
 .pnp.js
 
@@ -24,3 +25,7 @@ yarn-error.log*
 
 .idea
 .github
+../.idea/Despliegue.iml
+../.idea/modules.xml
+azure-pipelines.yml
+src/screenshots/
