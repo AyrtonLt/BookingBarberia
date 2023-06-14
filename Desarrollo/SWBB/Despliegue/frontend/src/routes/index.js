@@ -10,6 +10,7 @@ import Home from "../Pages/Home/Home";
 import BarberDetail from "../Pages/BarberDetail/BarberDetail";
 import Reservation from "../Pages/Reservation/Reservation";
 import Profile from "../Pages/Profile/Profile";
+import AccountCreatedPage from "../Pages/AccountCreatedPage/AccountCreatedPage";
 //import Dashboard from "../pages/Dashboard";
 //import Profile from "../pages/Profile";
 
@@ -30,6 +31,7 @@ export default function Routes() {
                 component={Reservation}
             />
             <Route path="/profile" component={Profile}/>
+            <Route path="/accountcreated" component={AccountCreatedPage} />
 
             {/* redirect user to SignIn page if route does not exist and user is not authenticated */}
             <Route component={Home}/>
