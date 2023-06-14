@@ -16,6 +16,7 @@ import {
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import ConfirmModal from "../../Components/ConfirmModal/ConfirmModal";
 import { makeStyles } from "@material-ui/core/styles";
+import axios from "axios";
 
 function Copyright() {
   return (
@@ -63,6 +64,38 @@ const SignUp = (props) => {
   const history = useHistory();
 
   const customer = Storage.GetItem("customer");
+
+  const handleSignUp = () => {
+    setIsLoading(true);
+
+    const requestData = {
+      nombre: firstName,
+      apellido: lastName,
+      correo: eMail,
+      pass: password,
+    };
+
+    axios
+        .post("http://localhost:3000/clientes", requestData)
+        .then((response) => {
+          setIsLoading(false);
+          if (response.data.message) {
+            // Registro exitoso
+            // Aquí puedes realizar cualquier acción adicional o mostrar un mensaje de éxito
+            console.log("Registro exitoso:", response.data.message);
+          } else {
+            // Error en el registro
+            // Aquí puedes mostrar un mensaje de error o tomar las acciones necesarias
+            console.log("Error en el registro:", response.data);
+          }
+        })
+        .catch((error) => {
+          setIsLoading(false);
+          // Manejo de errores en caso de falla en la solicitud
+          console.log("Error en la solicitud:", error);
+        });
+  };
+
   return !customer ? (
     <Container component="main" maxWidth="xs">
       {/* <CssBaseline /> */}
@@ -157,40 +190,7 @@ const SignUp = (props) => {
             variant="contained"
             color="primary"
             className={classes.submit}
-            onClick={() => {
-              setIsLoading(true);
-
-              Agent.Customers.addCustomer()
-                .send({
-                  name: firstName,
-                  lastName: lastName,
-                  eMail: eMail,
-                  password: password,
-                })
-                .then((res) => {
-                  if (res.ok) {
-                    if (!res.body.Error) {
-                      setIsLoading(false);
-                      Storage.SetItem("customer", {
-                        id: res.body.data.id,
-                        name: res.body.data.name,
-                        lastName: res.body.data.lastName,
-                        eMail: res.body.data.eMail,
-                      });
-                      props.setCustomer({
-                        ...res.body.data,
-                        password: "****",
-                      });
-                      history.push("/");
-                    } else {
-                      setOpenConfirmModal(true);
-                      setIsLoading(false);
-                      setModalContent(res.body.Message);
-                      console.log("error", res.body.Message);
-                    }
-                  }
-                });
-            }}
+            onClick={handleSignUp}
           >
             Sign Up
           </Button>
