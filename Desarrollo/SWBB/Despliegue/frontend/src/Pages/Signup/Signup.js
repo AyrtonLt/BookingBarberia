@@ -83,6 +83,7 @@ const SignUp = (props) => {
             // Registro exitoso
             // Aquí puedes realizar cualquier acción adicional o mostrar un mensaje de éxito
             console.log("Registro exitoso:", response.data.message);
+            history.push("/accountcreated");
           } else {
             // Error en el registro
             // Aquí puedes mostrar un mensaje de error o tomar las acciones necesarias

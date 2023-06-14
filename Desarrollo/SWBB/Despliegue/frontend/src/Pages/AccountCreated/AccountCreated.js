@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const AccountCreatedPage = () => {
+const AccountCreated = () => {
     const classes = useStyles();
 
     return (
@@ -62,4 +62,4 @@ const AccountCreatedPage = () => {
     );
 };
 
-export default AccountCreatedPage;
+export default AccountCreated;
