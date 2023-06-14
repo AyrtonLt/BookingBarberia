@@ -53,9 +53,9 @@ const useStyles = makeStyles((theme) => ({
 
 const SignUp = (props) => {
   const classes = useStyles();
+  // Estados locales para cada campo del formulario
   const [firstName, setFirstName] = useState("");
   const [lastName, setlastName] = useState("");
-
   const [eMail, seteMail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -66,6 +66,11 @@ const SignUp = (props) => {
   const customer = Storage.GetItem("customer");
 
   const handleSignUp = () => {
+    // Validar que los campos no estén vacíos
+    if (firstName.trim() === "" || lastName.trim() === "" || eMail.trim() === "" || password.trim() === "") {
+      console.log("Por favor completa todos los campos");
+      return;
+    }
     setIsLoading(true);
 
     const requestData = {
@@ -193,7 +198,7 @@ const SignUp = (props) => {
             className={classes.submit}
             onClick={handleSignUp}
           >
-            Sign Up
+            Regístrate
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
