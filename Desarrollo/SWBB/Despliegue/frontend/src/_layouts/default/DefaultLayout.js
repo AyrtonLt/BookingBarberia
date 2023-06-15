@@ -217,6 +217,7 @@ const DefaultLayout = (props) => {
                 >
                   <MenuItem
                     onClick={() => {
+                      console.log('custormer:', customer);
                       if (customer) history.push("/profile");
                       else history.push("/login");
                       handleDrawerClose();

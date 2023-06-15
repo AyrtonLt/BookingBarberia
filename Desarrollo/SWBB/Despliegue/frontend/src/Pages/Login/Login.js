@@ -49,6 +49,22 @@ const Login = (props) => {
   const history = useHistory();
 
   const customer = props.customer;
+  console.log('prop.customer',props.customer);
+  const getCustomerData = async (idCliente) => {
+    try {
+      const response = await axios.get(`http://localhost:3000/cliente/${idCliente}`);
+      const customerData = response.data;
+
+      // Guardar los datos del cliente en el almacenamiento local
+      Storage.SetCustomer(customerData);
+
+      return customerData;
+    } catch (error) {
+      console.error("Error al obtener los datos del cliente:", error);
+      return null;
+    }
+  };
+
 
   return !customer ? (
     <Container component="main" maxWidth="xs">

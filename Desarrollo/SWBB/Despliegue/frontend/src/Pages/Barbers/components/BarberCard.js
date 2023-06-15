@@ -78,10 +78,10 @@ export const BarberCard = ({ barber }) => {
                     gutterBottom
                     style={{ marginBottom: "1em" }}
                   >
-                    {barber.barberName}
+                    {barber.nombreBarberia}
                   </Typography>
                   <Typography variant="body2" gutterBottom>
-                    {barber.district}
+                    {barber.district_iDistrito}
                   </Typography>
                   <Typography
                     variant="body2"
@@ -94,7 +94,7 @@ export const BarberCard = ({ barber }) => {
                     }}
                   >
                     <LocationOnSharp color="gray " fontSize="small" />
-                    {barber.adress}
+                    {barber.direccionBarberia}
                   </Typography>
                 </Grid>
                 <Grid item style={{ textAlign: "right" }}>
