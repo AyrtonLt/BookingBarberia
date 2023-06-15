@@ -5,6 +5,7 @@ const cliente = require('./routes/clienteRoutes');
 const barbero = require('./routes/barberoRoutes');
 const servicio = require('./routes/servicioRoutes');
 const { login } = require('./controllers/clienteControllers');
+const barberia = require('./routes/barberiaRoutes');
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use('/clientes', cliente);
 app.use('/barberos', barbero);
 app.use('/servicios', servicio);
 app.post('/login', login);
+app.use('/barberias', barberia);
 
 app.get("/", (req, res) => {
     res.json("Hello this is backend");

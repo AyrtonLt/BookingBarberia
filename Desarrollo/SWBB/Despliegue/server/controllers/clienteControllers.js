@@ -105,6 +105,24 @@ const verifyToken = (req, res, next) => {
     });
 };
 
+// Modulo obtener dato del cliente por el ID
+const getCustomerById = (req, res) => {
+    const idCliente = req.params.id;
+
+    const q = "SELECT * FROM Cliente WHERE idCliente = ?";
+
+    connection.query(q, [idCliente], (err, data) => {
+        if (err) return res.json(err);
+
+        if (data.length === 0) {
+            return res.json({ error: "Cliente no encontrado" });
+        }
+
+        const customerData = data[0];
+        return res.json(customerData);
+    });
+};
+
 module.exports = {
     getUsers,
     createUser,
@@ -112,4 +130,5 @@ module.exports = {
     deleteUser,
     login,
     verifyToken,
+    getCustomerById,
 };
