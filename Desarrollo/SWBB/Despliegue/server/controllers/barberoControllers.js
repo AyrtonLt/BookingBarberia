@@ -1,11 +1,25 @@
 const connection = require('../bdConnection');
+//añadido
+const reservaControllers = require('./reservaControllers');//
+
 
 const getUsers = (req, res) => {
     const q = "SELECT * FROM Barbero"
-    connection.query(q, (err, data) => {
+    connection.query(q,async (err, data) => {
         if (err) return res.json(err);
         return res.json(data);
-    })
+
+       //añadido (Obtener las reservas asociadas a cada barbero)
+       const barberos = JSON.parse(JSON.stringify(data)); 
+       for (const barbero of barberos) {
+           const reservas = await reservaControllers.getReservationsByBarber(barbero.idBarbero);
+           const reservasAceptadas = await reservaControllers.getAcceptedReservationsByBarber(barbero.idBarbero);
+           barbero.reservas = reservas;
+           barbero.reservasAceptadas = reservasAceptadas;
+       }
+
+       return res.json(barberos);
+    });
 }
 const createUser = (req, res) => {
     const q = "INSERT INTO Barbero(`nombreBarbero`, `apellidoBarbero`, `apodoBarbero`, `correoBarbero`, `passwordBarbero`, `descripcionBarbero`, `telefonoBarbero`, `contenidoFotoPerfilBarbero`, `Barberia_idBarberia`) VALUES (?)";
