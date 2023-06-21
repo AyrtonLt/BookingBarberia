@@ -79,17 +79,4 @@ describe('Barberia Controller', () => {
       expect(response.status).toBe(200);
     });
   });
-
-  // Después de cada prueba, cierra la conexión a la base de datos
-  afterEach(done => {
-    connection.end(err => {
-      if (err) {
-        console.error('Error al cerrar la conexión a la base de datos', err);
-        done();
-      } else {
-        console.log('Conexión a la base de datos cerrada');
-        done();
-      }
-    });
-  });
 });

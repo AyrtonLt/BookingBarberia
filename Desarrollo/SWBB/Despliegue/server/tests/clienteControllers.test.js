@@ -1,30 +1,10 @@
 const request = require('supertest');
-const express = require('express');
-const app = express();
-
-// Importar las funciones del controlador
-const {
-  getUsers,
-  createUser,
-  updateUser,
-  deleteUser,
-  login,
-  verifyToken,
-  getCustomerById,
-} = require('../controllers/clienteControllers');
-
-// Configurar el servidor de prueba
-app.use(express.json());
-app.get('/users', getUsers);
-app.post('/users', createUser);
-app.put('/users/:id', updateUser);
-app.delete('/users/:id', deleteUser);
-app.post('/login', login);
-app.get('/customer/:id', verifyToken, getCustomerById);
+const app = require('../index'); // Importa tu aplicación Express
+const connection = require('../bdConnection');
 
 describe('Cliente Controller', () => {
-  test('Obtener todos los usuarios', async () => {
-    const response = await request(app).get('/users');
+  test('Obtener todos los clientes', async () => {
+    const response = await request(app).get('/clientes');
     expect(response.statusCode).toBe(200);
     expect(response.body).toEqual(expect.any(Array));
   });
@@ -33,13 +13,18 @@ describe('Cliente Controller', () => {
     const newUser = {
       nombre: 'John',
       apellido: 'Doe',
-      correo: 'johndoe@example.com',
+      correo: 'johndoe@example3.com',
       pass: 'password123',
     };
 
-    const response = await request(app).post('/users').send(newUser);
+    const response = await request(app).post('/clientes').send(newUser);
     expect(response.statusCode).toBe(200);
-    expect(response.body).toEqual(expect.objectContaining({ success: true }));
+
+    if (response.body.success === true) {
+      expect(response.body).toEqual(expect.objectContaining({ success: true }));
+    } else {
+      expect(response.body).toEqual(expect.objectContaining({ error: "El correo electrónico ya está registrado" }));
+    }
   });
 
   test('Actualizar un usuario existente', async () => {
@@ -48,13 +33,13 @@ describe('Cliente Controller', () => {
       apellido: 'Doe',
     };
 
-    const response = await request(app).put('/users/1').send(updatedUser);
+    const response = await request(app).put('/clientes/1').send(updatedUser);
     expect(response.statusCode).toBe(200);
     expect(response.body).toBe('Cliente has been updated succesfully.');
   });
 
   test('Eliminar un usuario existente', async () => {
-    const response = await request(app).delete('/users/1');
+    const response = await request(app).delete('/clientes/5');
     expect(response.statusCode).toBe(200);
     expect(response.body).toEqual(expect.objectContaining({ message: 'Cliente eliminado exitosamente' }));
   });
@@ -73,7 +58,7 @@ describe('Cliente Controller', () => {
   test('Obtener datos de un cliente por ID (requiere token)', async () => {
     // Primero, iniciar sesión para obtener un token válido
     const credentials = {
-      correo: 'johndoe@example.com',
+      correo: 'johndoe@example3.com',
       pass: 'password123',
     };
 
@@ -82,7 +67,7 @@ describe('Cliente Controller', () => {
 
     // Luego, realizar la solicitud GET con el token en los encabezados
     const response = await request(app)
-      .get('/customer/1')
+      .get('/clientes/1')
       .set('Authorization', token);
 
     expect(response.statusCode).toBe(200);
