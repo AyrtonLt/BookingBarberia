@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const barberiaController = require('../controllers/barberiaController');
+const barberiaController = require('../controllers/barberiaControllers');
 
 router.get("", barberiaController.getBarberias);
 router.post("", barberiaController.createBarberia);

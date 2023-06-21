@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const fotoportafolioController = require('../controllers/fotoportafolioController');
+const fotoportafolioController = require('../controllers/fotoportafolioControllers');
 
 router.get("", fotoportafolioController.getFotoPortafolio);
 router.post("", fotoportafolioController.createFotoPortafolio);
