@@ -9,7 +9,7 @@ const getServices = (req, res) => {
     });
 }
 const createService = (req, res) => {
-    const q = "INSERT INTO Servicio (`nombreServicio`, `descripcionServicio`, `precioServicio`, `estadoServicio`, `Barbero_idBarbero`) VALUES (?)";
+    const q = "INSERT INTO Servicio (`nombreServicio`, `descripcionServicio`, `precioServicio`, `estadoServicio`, `idBarbero`) VALUES (?)";
 
     const values = [
         req.body.nombre,
@@ -26,7 +26,7 @@ const createService = (req, res) => {
 }
 const updateService = (req, res) => {
     const idServicio = req.params.id;
-    const q = "UPDATE Servicio SET `nombreServicio` = ?, `descripcionServicio` = ?, `precioServicio` = ?, `estadoServicio` = ?, `Barbero_idBarbero` = ? WHERE idServicio = ?";
+    const q = "UPDATE Servicio SET `nombreServicio` = ?, `descripcionServicio` = ?, `precioServicio` = ?, `estadoServicio` = ?, `idBarbero` = ? WHERE idServicio = ?";
 
     const values = [
         req.body.nombre,
