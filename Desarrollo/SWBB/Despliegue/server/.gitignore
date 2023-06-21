@@ -24,6 +24,4 @@ yarn-debug.log*
 yarn-error.log*
 
 .idea
-.github
-azure-pipelines.yml
-src/screenshots/
+/node_modules/

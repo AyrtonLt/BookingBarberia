@@ -12,6 +12,7 @@ import {
   makeStyles,
   ThemeProvider,
 } from "@material-ui/core/styles";
+import SessionManager from "./Components/SessionManager";
 
 const newTheme = createMuiTheme({
   palette: {
@@ -39,6 +40,7 @@ const newTheme = createMuiTheme({
 function App() {
   return (
     <Router history={history}>
+      <SessionManager />
       <ThemeProvider theme={newTheme}>
         <Routes />
       </ThemeProvider>

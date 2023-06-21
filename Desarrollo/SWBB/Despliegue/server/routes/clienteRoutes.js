@@ -8,5 +8,6 @@ router.put("/:id", userController.updateUser);
 router.delete("/:id", userController.deleteUser);
 // Ruta para el inicio de sesión
 router.post("/login", userController.login);
+router.get("/:id", userController.getCustomerById);
 
 module.exports = router;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Button,
@@ -23,7 +23,6 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     padding: theme.spacing(2),
     margin: "auto",
-    // maxWidth: 600,
     width: "95%",
   },
   image: {
@@ -43,15 +42,31 @@ const useStyles = makeStyles((theme) => ({
 
 export const BarberCard = ({ barber }) => {
   const classes = useStyles();
-  const [shadow, setShadow] = React.useState(1);
+  const [shadow, setShadow] = useState(1);
   const history = useHistory();
+  const [fotoPortafolio, setFotoPortafolio] = useState(null);
+
+  useEffect(() => {
+    // Obtener la foto del portafolio del backend
+    fetch(`http://localhost:3000/fotoportafolio/${barber.id}`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data && data[0] && data[0].contenidoFotoPortafolio) {
+          const fotoPortafolioBlob = new Blob([data[0].contenidoFotoPortafolio], { type: "image/jpeg" });
+          setFotoPortafolio(URL.createObjectURL(fotoPortafolioBlob));
+        }
+      })
+      .catch((error) => console.error("Error al obtener la foto del portafolio", error));
+  }, [barber.id]);
+
   const onMouseOver = () => {
     setShadow(3);
   };
+
   const onMouseOut = () => {
     setShadow(1);
   };
-  const imageMahmut = "";
+
   return (
     <div className={classes.root}>
       <Link to={`/barberdetail/${barber.id}`}>
@@ -67,7 +82,11 @@ export const BarberCard = ({ barber }) => {
           <Grid container spacing={2}>
             <Grid item>
               <ButtonBase className={classes.image}>
-                <img className={classes.img} alt="complex" src={barber.photo} />
+                {fotoPortafolio ? (
+                  <img className={classes.img} alt="complex" src={fotoPortafolio} />
+                ) : (
+                  <span>Foto no disponible</span>
+                )}
               </ButtonBase>
             </Grid>
             <Grid item xs={12} sm={11} sm container>
@@ -78,10 +97,10 @@ export const BarberCard = ({ barber }) => {
                     gutterBottom
                     style={{ marginBottom: "1em" }}
                   >
-                    {barber.barberName}
+                    {barber.nombreBarberia}
                   </Typography>
                   <Typography variant="body2" gutterBottom>
-                    {barber.district}
+                    {barber.district_iDistrito}
                   </Typography>
                   <Typography
                     variant="body2"
@@ -94,13 +113,10 @@ export const BarberCard = ({ barber }) => {
                     }}
                   >
                     <LocationOnSharp color="gray " fontSize="small" />
-                    {barber.adress}
+                    {barber.direccionBarberia}
                   </Typography>
                 </Grid>
                 <Grid item style={{ textAlign: "right" }}>
-                  {/* <Button size="small" color="secondary">
-                  İncele
-                </Button> */}
                   <Button
                     size="small"
                     color="primary"
@@ -126,9 +142,6 @@ export const BarberCard = ({ barber }) => {
                   </IconButton>
                 </Grid>
               </Grid>
-              {/* <Grid item>
-                <Typography variant="subtitle1">$19.00</Typography>
-              </Grid> */}
             </Grid>
           </Grid>
         </Paper>
