@@ -16,6 +16,7 @@ const servicio = require('./routes/servicioRoutes');
 const { login } = require('./controllers/clienteControllers');
 const barberia = require('./routes/barberiaRoutes');
 const fotoportafolio = require('./routes/fotoportafolioRoutes');
+const reserva = require('./routes/reservaRoutes');
 const connection = require('./bdConnection');
 
 const app = express();
@@ -30,6 +31,7 @@ app.use('/servicios', servicio);
 app.post('/login', login);
 app.use('/barberias', barberia);
 app.use('/fotoportafolio', fotoportafolio);
+app.use('/reservas', reserva);
 
 
 
@@ -77,3 +79,6 @@ app.get("/", (req, res) => {
 app.listen(3000, () => {
     console.log(app.get('title') + ' Connected to backend');
 })
+
+// Exporta la aplicación
+module.exports = app;
