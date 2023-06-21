@@ -77,3 +77,6 @@ app.get("/", (req, res) => {
 app.listen(3000, () => {
     console.log(app.get('title') + ' Connected to backend');
 })
+
+// Exporta la aplicación
+module.exports = app;
