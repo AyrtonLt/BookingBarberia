@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 08-06-2023 a las 17:24:20
+-- Tiempo de generación: 01-07-2023 a las 19:33:23
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -34,34 +34,35 @@ CREATE TABLE `barberia` (
   `idBarberia` int(11) NOT NULL,
   `nombreBarberia` varchar(45) NOT NULL,
   `direccionBarberia` varchar(45) NOT NULL,
-  `Distrito_idDistrito` int(11) NOT NULL
+  `Distrito_idDistrito` int(11) NOT NULL,
+  `codigo_postal` int(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Volcado de datos para la tabla `barberia`
 --
 
-INSERT INTO `barberia` (`idBarberia`, `nombreBarberia`, `direccionBarberia`, `Distrito_idDistrito`) VALUES
-(1, 'A & S Barber Shop', 'Av. José Pardo 620', 21),
-(2, 'NewYork Barberia Clásica', 'Av. Sta. Cruz 835', 21),
-(3, 'Cupper’s 65 Barber Shop', 'Av. República de Panamá 6550', 6),
-(4, 'Klipperz', 'Av. Angamos 2268', 41),
-(5, 'Barbería La Paz', 'La Paz 418', 21),
-(6, 'Barbería Carpone', 'Calle Schell 361', 21),
-(7, 'Barbería Il Capo', 'Manuel Villaran 838', 41),
-(8, 'Montreal Barber Shop', 'Calle San Martin 429', 21),
-(9, 'Camaleon Barber Shop', 'Jorge Chávez 129', 21),
-(10, 'The Barber Company', 'Av. Arenales 2211', 16),
-(11, 'Lima Cutz Baber Lounge Barberia Barber Shop', 'Av. Caminos del Inca 3189', 40),
-(12, 'Lima Barber Club', 'Av. General Eugenio Garzón 598', 13),
-(13, 'Barbaric Barber Shop & Club', 'Av. Javier Prado Este 6520', 6),
-(14, 'Good Fella\'s Barbershop Perú', 'Av. La Marina 3285', 6),
-(15, 'Batistino Barbería', 'Av. El Polo 481 Monterrico', 40),
-(16, 'Barbería Barba Negra', 'Calle Colón 185', 21),
-(17, 'Barber Brother\'s', 'Villa Real', 6),
-(18, 'El Turco', 'Av. San Martin 662', 3),
-(19, 'BARLOVENTO BARBER SHOP', 'Av. Ramon Herrera 301', 6),
-(20, 'Barbería Perú Style', 'Av. Arnaldo Márquez 1263', 13);
+INSERT INTO `barberia` (`idBarberia`, `nombreBarberia`, `direccionBarberia`, `Distrito_idDistrito`, `codigo_postal`) VALUES
+(1, 'A & S Barber Shop', 'Av. José Pardo 620', 21, 15074),
+(2, 'NewYork Barberia Clásica', 'Av. Sta. Cruz 835', 21, 15074),
+(3, 'Cupper’s 65 Barber Shop', 'Av. República de Panamá 6550', 6, 15003),
+(4, 'Klipperz', 'Av. Angamos 2268', 41, 15047),
+(5, 'Barbería La Paz', 'La Paz 418', 21, 15074),
+(6, 'Barbería Carpone', 'Calle Schell 361', 21, 15074),
+(7, 'Barbería Il Capo', 'Manuel Villaran 838', 41, 15038),
+(8, 'Montreal Barber Shop', 'Calle San Martin 429', 21, 15074),
+(9, 'Camaleon Barber Shop', 'Jorge Chávez 129', 21, 15074),
+(10, 'The Barber Company', 'Av. Arenales 2211', 16, 15073),
+(11, 'Lima Cutz Baber Lounge Barberia Barber Shop', 'Av. Caminos del Inca 3189', 40, 15053),
+(12, 'Lima Barber Club', 'Av. General Eugenio Garzón 598', 13, 15076),
+(13, 'Barbaric Barber Shop & Club', 'Av. Javier Prado Este 6520', 6, 15034),
+(14, 'Good Fella\'s Barbershop Perú', 'Av. La Marina 3285', 6, 15001),
+(15, 'Batistino Barbería', 'Av. El Polo 481 Monterrico', 40, 15038),
+(16, 'Barbería Barba Negra', 'Calle Colón 185', 21, 15074),
+(17, 'Barber Brother\'s', 'Villa Real', 6, 15701),
+(18, 'El Turco', 'Av. San Martin 662', 3, 15047),
+(19, 'BARLOVENTO BARBER SHOP', 'Av. Ramon Herrera 301', 6, 15004),
+(20, 'Barbería Perú Style', 'Av. Arnaldo Márquez 1263', 13, 15084);
 
 -- --------------------------------------------------------
 
