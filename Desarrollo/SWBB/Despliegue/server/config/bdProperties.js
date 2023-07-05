@@ -2,7 +2,7 @@ module.exports = {
     mysql_database: {
         host: 'localhost',
         user: 'root',
-        password: 'lagarto23rinoceronte',
+        password: '123456',
         database: 'barberia_db'
     }
 }
